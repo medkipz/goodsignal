@@ -88,14 +88,16 @@ function Connection:Disconnect()
 end
 
 -- Make Connection strict
-setmetatable(Connection, {
+setmetatable(Connection, table.freeze({
 	__index = function(_, key)
 		error(("Attempt to get Connection::%s (not a valid member)"):format(tostring(key)), 2)
 	end,
 	__newindex = function(_, key)
 		error(("Attempt to set Connection::%s (not a valid member)"):format(tostring(key)), 2)
 	end,
-})
+}))
+
+table.freeze(Connection)
 
 export type Connection = {
 	Disconnect: (self: Connection) -> (),
@@ -180,13 +182,13 @@ function Signal:Once(fn)
 end
 
 -- Make signal strict
-setmetatable(Signal, {
+setmetatable(Signal, table.freeze({
 	__index = function(_, key)
 		error(("Attempt to get Signal::%s (not a valid member)"):format(tostring(key)), 2)
 	end,
 	__newindex = function(_, key)
 		error(("Attempt to set Signal::%s (not a valid member)"):format(tostring(key)), 2)
 	end,
-})
+}))
 
-return Signal
+return table.freeze(Signal)
